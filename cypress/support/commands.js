@@ -83,3 +83,30 @@ Cypress.Commands.add("criarPerfil", () => {
         return response.body.jwt
     })
  })
+
+ Cypress.Commands.add("criarPosts",(token, value)=>{
+    cy.request({
+        method: 'POST',
+        url: '/api/posts',
+        headers:{
+            Cookies: token
+        },
+        body:{
+            text: value
+        }
+    })
+ })
+
+ Cypress.Commands.add("criarUsuario",()=>{
+    cy.request({
+        method: 'POST',
+        url: '/api/users',
+        body:{
+            name: faker.name.firstName(),
+            email: faker.internet.email(),
+            password: faker.internet.password()
+          }
+    }).then((response)=>{
+        return response.body.jwt
+    })
+ })

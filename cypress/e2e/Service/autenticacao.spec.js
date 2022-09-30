@@ -17,12 +17,12 @@ it('Teste Autenticação com usuário inválido', () => {
     cy.request({
         method: 'POST',
         url: '/api/auth',
+        failOnStatusCode: false,
         body: {
-                "email": "testuser10@test.com",
+                "email": "lopesoftware@bootcamp.com",
                 "password": "pass12345"
             }
     }).then((response)=>{
         expect(response.status).to.eq(401)
-        expect(response.body).to.have.property("jwt")
     })
 })
