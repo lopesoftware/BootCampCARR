@@ -1,4 +1,5 @@
 const faker = require('faker-br')
+import auth from '../fixtures/auth.json'
 // ***********************************************
 // This example commands.js shows you how to
 // create various custom commands and overwrite
@@ -71,4 +72,41 @@ Cypress.Commands.add("criarPerfil", () => {
 
     //Resultado esperado
     cy.get('[data-test="alert"]').should('be.visible')
+ })
+
+ Cypress.Commands.add("tokenJWT",()=>{
+    cy.request({
+        method: 'POST',
+        url: '/api/auth',
+        body: auth
+    }).then((response)=>{
+        return response.body.jwt
+    })
+ })
+
+ Cypress.Commands.add("criarPosts",(token, value)=>{
+    cy.request({
+        method: 'POST',
+        url: '/api/posts',
+        headers:{
+            Cookies: token
+        },
+        body:{
+            text: value
+        }
+    })
+ })
+
+ Cypress.Commands.add("criarUsuario",()=>{
+    cy.request({
+        method: 'POST',
+        url: '/api/users',
+        body:{
+            name: faker.name.firstName(),
+            email: faker.internet.email(),
+            password: faker.internet.password()
+          }
+    }).then((response)=>{
+        return response.body.jwt
+    })
  })
